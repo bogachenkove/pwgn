@@ -2,14 +2,16 @@
 #include <string_view>
 
 namespace pwd {
-    constexpr size_t MIN_PASSWORD_LENGTH = 10;
-    constexpr size_t MAX_PASSWORD_LENGTH = 1'000'000;
-    constexpr size_t DEFAULT_PASSWORD_LENGTH = 32;
-    constexpr size_t DEFAULT_QUANTITY = 1;
+    constexpr size_t MinimumPasswordLength = 10;
+    constexpr size_t MaximumPasswordLength = 1'000'000;
 
-    // Используем string_view для нулевых накладных расходов и совместимости
-    constexpr std::string_view CHARSET_UPPER = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    constexpr std::string_view CHARSET_LOWER = "abcdefghijklmnopqrstuvwxyz";
-    constexpr std::string_view CHARSET_DIGITS = "0123456789";
-    constexpr std::string_view CHARSET_SPECIAL = "!@#$%^&*()-_=+[]{}|;:,.<>?/~`";
-}
+    constexpr size_t RandomDefaultMinLength = 10;
+    constexpr size_t RandomDefaultMaxLength = 100;
+
+    constexpr size_t DefaultPasswordQuantity = 1;
+
+    constexpr std::string_view UpperCaseCharacters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    constexpr std::string_view LowerCaseCharacters = "abcdefghijklmnopqrstuvwxyz";
+    constexpr std::string_view NumericCharacters = "0123456789";
+    constexpr std::string_view SpecialCharacters = "!@#$%^&*()-_=+[]{}|;:,.<>?/~`";
+} // namespace pwd
