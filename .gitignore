@@ -1,0 +1,12 @@
+# MCVS
+*.sln
+*.vcxproj
+*.vcxproj.*
+Release/
+Debug/
+.vs/
+
+# Execute
+*.exe
+*.dll
+*.so
