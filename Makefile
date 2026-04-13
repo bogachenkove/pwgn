@@ -1,56 +1,23 @@
+CC = gcc
+TARGET = pwgen
+SRCDIR = source
+SRCS = $(SRCDIR)/main.c $(SRCDIR)/parser.c $(SRCDIR)/generator.c $(SRCDIR)/platform.c $(SRCDIR)/metadata.c
+OBJS = $(patsubst $(SRCDIR)/%.c,%.o,$(SRCS))
+HEADERS = $(SRCDIR)/constant.h $(SRCDIR)/parser.h $(SRCDIR)/generator.h $(SRCDIR)/platform.h $(SRCDIR)/metadata.h
 
-CXX       := g++
-CXXSTD    := -std=c++20
+CFLAGS = -Os -DNDEBUG -w -fno-asynchronous-unwind-tables -fno-unwind-tables \
+         -ffunction-sections -fdata-sections -I$(SRCDIR)
+LDFLAGS = -Wl,--gc-sections -Wl,--strip-all -lsodium
 
-CXXFLAGS  := $(CXXSTD) -O2 -ffunction-sections -fdata-sections -DNDEBUG \
-             -Wall -Wextra -Wpedantic -MMD -MP
-
-LDFLAGS   := -Wl,--gc-sections -Wl,--strip-all
-LIBS      := -lsodium
-
-SRC_DIR   := src
-BUILD_DIR := build
-
-TARGET    := $(BUILD_DIR)/pwgn
-
-SRCS      := $(wildcard $(SRC_DIR)/*.cpp)
-OBJS      := $(patsubst $(SRC_DIR)/%.cpp,$(BUILD_DIR)/%.o,$(SRCS))
-DEPS      := $(OBJS:.o=.d)
-
-.PHONY: all clean run help
+.PHONY: all clean
 
 all: $(TARGET)
 
 $(TARGET): $(OBJS)
-	@echo "[LINK]   $@"
-	@$(CXX) $(CXXFLAGS) -o $@ $^ $(LDFLAGS) $(LIBS)
-	@echo "[STRIP]  Final cleanup: removing all debug, symbol & metadata sections"
-	@strip --strip-all --remove-section=.comment --remove-section=.note \
-	       --remove-section=.note.gnu.build-id $@ 2>/dev/null || strip -s $@
-	@echo "[OK]     Clean binary built: $(TARGET)"
+	$(CC) $(CFLAGS) -o $@ $^ $(LDFLAGS)
 
-$(BUILD_DIR)/%.o: $(SRC_DIR)/%.cpp | $(BUILD_DIR)
-	@echo "[CXX]    $<"
-	@$(CXX) $(CXXFLAGS) -I$(SRC_DIR) -c $< -o $@
-
-$(BUILD_DIR):
-	@mkdir -p $(BUILD_DIR)
-
-run: $(TARGET)
-	@./$(TARGET)
+%.o: $(SRCDIR)/%.c $(HEADERS)
+	$(CC) $(CFLAGS) -c $< -o $@
 
 clean:
-	@echo "[CLEAN]  Removing $(BUILD_DIR)/"
-	@rm -rf $(BUILD_DIR)
-	@echo "[OK]     Clean complete."
-
-help:
-	@echo "Usage: make [TARGET]"
-	@echo ""
-	@echo "Targets:"
-	@echo "  all     - Build the project (default)"
-	@echo "  run     - Build and execute the program"
-	@echo "  clean   - Remove build artifacts"
-	@echo "  help    - Show this help message"
-
--include $(DEPS)
+	rm -f $(OBJS) $(TARGET)

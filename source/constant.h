@@ -1,0 +1,12 @@
+#pragma once
+
+#define MIN_PASSWORD_LENGTH 10
+#define MAX_PASSWORD_LENGTH 1000000
+#define RANDOM_DEFAULT_MIN_LEN 10
+#define RANDOM_DEFAULT_MAX_LEN 100
+#define DEFAULT_PASSWORD_QUANTITY 1
+
+#define UPPER_CASE_CHARS "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+#define LOWER_CASE_CHARS "abcdefghijklmnopqrstuvwxyz"
+#define NUMERIC_CHARS "0123456789"
+#define SPECIAL_CHARS "!@#$%^&*()-_=+[]{}|;:,.<>?/~`"
